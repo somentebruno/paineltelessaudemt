@@ -843,10 +843,201 @@
         overflow-y: auto;
       }
     }
+
+    /* ─── Barra de Acessibilidade ─── */
+    .a11y-bar {
+      position: fixed;
+      top: 14px;
+      right: 16px;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      background: rgba(248, 251, 255, 0.92);
+      backdrop-filter: blur(14px) saturate(1.3);
+      -webkit-backdrop-filter: blur(14px) saturate(1.3);
+      border: 1px solid rgba(19, 72, 160, 0.22);
+      border-radius: 10px;
+      padding: 4px;
+      box-shadow: 0 4px 16px rgba(11, 37, 80, 0.12), 0 1px 0 rgba(255,255,255,0.8) inset;
+    }
+
+    .a11y-btn {
+      width: 34px;
+      height: 34px;
+      border: none;
+      background: none;
+      border-radius: 7px;
+      cursor: pointer;
+      color: var(--blue-900);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, color 0.15s;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .a11y-btn:hover {
+      background: rgba(19, 72, 160, 0.09);
+    }
+
+    .a11y-btn:focus-visible {
+      outline: 2px solid var(--blue-700);
+      outline-offset: 2px;
+    }
+
+    .a11y-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .a11y-btn[aria-pressed="true"] {
+      background: var(--blue-900);
+      color: #fff;
+    }
+
+    .a11y-btn[aria-pressed="true"]:hover {
+      background: var(--blue-700);
+    }
+
+    .a11y-sep {
+      width: 1px;
+      height: 18px;
+      background: rgba(19, 72, 160, 0.15);
+      flex-shrink: 0;
+      margin: 0 2px;
+    }
+
+    .a11y-font-label {
+      font-size: 13px;
+      font-weight: 800;
+      font-family: 'Nunito', sans-serif;
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    .a11y-font-label.sm { font-size: 10px; }
+    .a11y-font-label.lg { font-size: 17px; }
+
+    /* ─── Alto Contraste ─── */
+    html[data-contrast="high"] #bg { display: none; }
+
+    html[data-contrast="high"] .overlay {
+      background: #fff;
+    }
+
+    html[data-contrast="high"] .screen {
+      background: #fff;
+    }
+
+    html[data-contrast="high"] .card-with-footer {
+      background: #ffffff;
+      border: 2px solid #000000;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      box-shadow: none;
+    }
+
+    html[data-contrast="high"] .card-footer {
+      background: #f0f0f0;
+      border-top: 2px solid #000;
+    }
+
+    html[data-contrast="high"] .divider {
+      background: #000;
+      width: 2px;
+    }
+
+    html[data-contrast="high"] .welcome-title,
+    html[data-contrast="high"] .welcome-eyebrow,
+    html[data-contrast="high"] .welcome-desc,
+    html[data-contrast="high"] .gov-label,
+    html[data-contrast="high"] .logo-text-main,
+    html[data-contrast="high"] .logo-text-sub,
+    html[data-contrast="high"] .ig-follow,
+    html[data-contrast="high"] .footer-text,
+    html[data-contrast="high"] .footer-links a,
+    html[data-contrast="high"] .footer-badge {
+      color: #000000;
+    }
+
+    html[data-contrast="high"] .btn-primary {
+      background: #000066;
+      border: 2px solid #000000;
+      color: #ffffff;
+      box-shadow: none;
+    }
+
+    html[data-contrast="high"] .btn-primary:hover {
+      background: #000099;
+    }
+
+    html[data-contrast="high"] .btn-secondary {
+      background: #ffffff;
+      border: 2px solid #000066;
+      color: #000066;
+      box-shadow: none;
+    }
+
+    html[data-contrast="high"] .btn-secondary:hover {
+      background: #e8e8ff;
+    }
+
+    html[data-contrast="high"] .btn:focus-visible {
+      outline: 3px solid #000000;
+    }
+
+    html[data-contrast="high"] .a11y-bar {
+      background: #ffffff;
+      border: 2px solid #000000;
+      box-shadow: none;
+    }
+
+    html[data-contrast="high"] .a11y-btn {
+      color: #000000;
+    }
+
+    html[data-contrast="high"] .a11y-btn[aria-pressed="true"] {
+      background: #000066;
+      color: #ffffff;
+    }
+
+    html[data-contrast="high"] .modal {
+      background: #ffffff;
+      border: 2px solid #000000;
+    }
+
+    html[data-contrast="high"] .modal-title,
+    html[data-contrast="high"] .modal-row-label,
+    html[data-contrast="high"] .modal-row-value,
+    html[data-contrast="high"] .modal-row-value a {
+      color: #000000;
+    }
   </style>
 </head>
 
 <body>
+
+  <!-- Barra de Acessibilidade -->
+  <div class="a11y-bar" role="toolbar" aria-label="Opções de acessibilidade">
+    <button class="a11y-btn" id="btnFontDecrease" aria-label="Diminuir tamanho da fonte" title="Diminuir fonte" disabled>
+      <span class="a11y-font-label sm" aria-hidden="true">A−</span>
+    </button>
+    <button class="a11y-btn" id="btnFontIncrease" aria-label="Aumentar tamanho da fonte" title="Aumentar fonte">
+      <span class="a11y-font-label lg" aria-hidden="true">A+</span>
+    </button>
+    <span class="a11y-sep" role="separator"></span>
+    <button class="a11y-btn" id="btnContrast" aria-label="Alternar alto contraste" title="Alto contraste" aria-pressed="false">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 3v18" stroke-width="0"/>
+        <path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/>
+      </svg>
+    </button>
+  </div>
 
   <!-- Canvas para partículas animadas -->
   <canvas id="bg"></canvas>
@@ -1277,6 +1468,63 @@
     btnFechar.addEventListener('click', fecharModal);
     overlay.addEventListener('click', (e) => { if (e.target === overlay) fecharModal(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharModal(); });
+
+    // ─── Acessibilidade: fonte e contraste ────────────────────────────────
+    (function () {
+      const STEP = 0.15;
+      const MIN  = 1;
+      const MAX  = 1.45;
+      const SELECTOR = [
+        '.welcome-title', '.welcome-eyebrow', '.welcome-desc',
+        '.btn', '.footer-text', '.footer-links a', '.footer-badge',
+        '.gov-label', '.ig-follow', '.modal-title',
+        '.modal-row-label', '.modal-row-value'
+      ].join(',');
+
+      let scale = 1;
+      let hiContrast = false;
+
+      const btnDec = document.getElementById('btnFontDecrease');
+      const btnInc = document.getElementById('btnFontIncrease');
+      const btnCon = document.getElementById('btnContrast');
+
+      function captureBase() {
+        document.querySelectorAll(SELECTOR).forEach(el => {
+          if (!el.dataset.baseFs)
+            el.dataset.baseFs = parseFloat(getComputedStyle(el).fontSize);
+        });
+      }
+
+      function applyScale(s) {
+        scale = Math.max(MIN, Math.min(MAX, s));
+        document.querySelectorAll(SELECTOR).forEach(el => {
+          el.style.fontSize = (parseFloat(el.dataset.baseFs) * scale) + 'px';
+        });
+        btnDec.disabled = scale <= MIN;
+        btnInc.disabled = scale >= MAX;
+        try { localStorage.setItem('a11y-scale', scale); } catch (_) {}
+      }
+
+      function applyContrast(on) {
+        hiContrast = on;
+        document.documentElement.dataset.contrast = on ? 'high' : 'normal';
+        btnCon.setAttribute('aria-pressed', String(on));
+        try { localStorage.setItem('a11y-contrast', on); } catch (_) {}
+      }
+
+      captureBase();
+
+      // Restaurar preferências salvas
+      try {
+        const savedScale = parseFloat(localStorage.getItem('a11y-scale'));
+        if (savedScale && savedScale > 1) applyScale(savedScale);
+        if (localStorage.getItem('a11y-contrast') === 'true') applyContrast(true);
+      } catch (_) {}
+
+      btnDec.addEventListener('click', () => applyScale(scale - STEP));
+      btnInc.addEventListener('click', () => applyScale(scale + STEP));
+      btnCon.addEventListener('click', () => applyContrast(!hiContrast));
+    })();
   </script>
 
 </body>
