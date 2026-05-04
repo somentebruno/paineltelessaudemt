@@ -623,6 +623,178 @@
       color: rgba(11, 37, 80, 0.55);
       line-height: 1.45;
     }
+
+    /* ─── Tablet (≤ 860px) ─── */
+    @media (max-width: 860px) {
+      .screen {
+        padding: 24px 16px;
+        align-items: flex-start;
+      }
+
+      .card-with-footer {
+        border-radius: 18px;
+      }
+
+      .left {
+        padding: 28px 24px 20px;
+        min-width: unset;
+      }
+
+      .right {
+        padding: 32px 36px 36px;
+        gap: 22px;
+      }
+
+      .welcome-title {
+        font-size: 30px;
+      }
+
+      .card-footer {
+        padding: 12px 32px;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .footer-text {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    /* ─── Mobile (≤ 600px) ─── */
+    @media (max-width: 600px) {
+      html, body {
+        overflow: auto;
+      }
+
+      .screen {
+        padding: 16px 12px 32px;
+        align-items: flex-start;
+        min-height: 100svh;
+      }
+
+      .card-with-footer {
+        border-radius: 16px;
+      }
+
+      /* Layout vira coluna */
+      .card-body {
+        flex-direction: column;
+      }
+
+      /* Divisor vira horizontal */
+      .divider {
+        width: 100%;
+        height: 1px;
+        align-self: auto;
+        background: linear-gradient(90deg,
+          transparent 0%,
+          rgba(19,72,160,0.18) 20%,
+          rgba(19,72,160,0.18) 80%,
+          transparent 100%);
+      }
+
+      /* LEFT */
+      .left {
+        padding: 28px 20px 20px;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .logo-wrap {
+        margin-top: 12px;
+        width: 96px;
+        height: 82px;
+      }
+
+      .logo-map-img {
+        width: 86px;
+      }
+
+      .logo-orbit-svg {
+        width: 168px;
+        height: 168px;
+      }
+
+      .logo-text {
+        margin-top: 16px;
+      }
+
+      .lt-saude  { font-size: 20px; }
+      .lt-digital { font-size: 17px; }
+
+      .logo-text-sub {
+        font-size: 12px;
+      }
+
+      .logo-ses {
+        width: 120px;
+      }
+
+      .ig-follow {
+        margin-top: 10px;
+        font-size: 10.5px;
+      }
+
+      /* RIGHT */
+      .right {
+        padding: 24px 20px 28px;
+        gap: 18px;
+      }
+
+      .welcome-eyebrow {
+        font-size: 10px;
+        margin-bottom: 6px;
+      }
+
+      .welcome-title {
+        font-size: 26px;
+      }
+
+      .welcome-desc {
+        font-size: 13px;
+        margin-top: 6px;
+      }
+
+      .btn {
+        padding: 13px 16px;
+        font-size: 14px;
+      }
+
+      .actions {
+        gap: 8px;
+      }
+
+      /* Footer */
+      .card-footer {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 20px;
+        text-align: center;
+      }
+
+      .footer-text {
+        white-space: normal;
+        text-align: center;
+      }
+
+      .footer-links {
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      /* Modal */
+      .modal {
+        margin: 12px;
+        padding: 28px 24px 24px;
+        max-width: 100%;
+        max-height: 90svh;
+        overflow-y: auto;
+      }
+    }
   </style>
 </head>
 
