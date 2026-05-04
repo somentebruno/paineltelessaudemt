@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      font-family: 'Nunito', sans-serif;
+      background: #0b1f4a;
+    }
+
+    .bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 15% 50%, #0b2550 0%, transparent 65%),
+        radial-gradient(ellipse 50% 60% at 85% 20%, #1348a0 0%, transparent 60%),
+        radial-gradient(ellipse 70% 70% at 50% 100%, #061430 0%, transparent 60%),
+        linear-gradient(135deg, #061735 0%, #0d2a5e 50%, #0b1f4a 100%);
+    }
+
+    /* Partículas decorativas */
+    .dots {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(106,174,232,0.25) 1px, transparent 1px),
+        radial-gradient(circle, rgba(106,174,232,0.15) 1px, transparent 1px);
+      background-size: 48px 48px, 24px 24px;
+      background-position: 0 0, 12px 12px;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 100px;
+      gap: 80px;
+    }
+
+    /* ── Logo lado esquerdo ── */
+    .logo-side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .orbit-wrap {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .orbit-wrap img {
+      width: 130px;
+      height: auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .orbit-svg {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 240px;
+      height: 240px;
+      z-index: 1;
+    }
+
+    .brand-text {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .brand-saude {
+      display: block;
+      font-size: 28px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.06em;
+      line-height: 1.0;
+    }
+
+    .brand-digital {
+      display: block;
+      font-size: 23px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.06em;
+      line-height: 1.0;
+    }
+
+    .brand-sub {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.1em;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    /* Divisor */
+    .divider {
+      width: 1px;
+      height: 260px;
+      background: linear-gradient(180deg, transparent, rgba(106,174,232,0.3) 30%, rgba(106,174,232,0.3) 70%, transparent);
+      flex-shrink: 0;
+    }
+
+    /* ── Texto direito ── */
+    .text-side {
+      flex: 1;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #6aaee8;
+      margin-bottom: 16px;
+    }
+
+    .main-title {
+      font-size: 52px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    .main-title em {
+      font-style: normal;
+      color: #6aaee8;
+    }
+
+    .description {
+      font-size: 18px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.55;
+      max-width: 480px;
+      margin-bottom: 36px;
+    }
+
+    /* Módulos */
+    .modules {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .module-tag {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(106,174,232,0.3);
+      background: rgba(106,174,232,0.08);
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.04em;
+    }
+
+    /* URL rodapé */
+    .footer-url {
+      position: absolute;
+      bottom: 32px;
+      right: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.04em;
+    }
+
+    /* Barra accent */
+    .accent-bar {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 5px;
+      background: linear-gradient(180deg, #2470d4, #6aaee8);
+      border-radius: 0 3px 3px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="dots"></div>
+  <div class="accent-bar"></div>
+
+  <div class="content">
+    <!-- Logo -->
+    <div class="logo-side">
+      <div class="orbit-wrap">
+        <img src="assets/mt-mapa-nos.png" alt="Mapa MT" />
+        <svg class="orbit-svg" viewBox="0 0 250 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(125,125)">
+            <circle r="93" stroke="rgba(106,174,232,0.35)" stroke-width="1.2" stroke-dasharray="160 424" fill="none"/>
+            <circle r="78" stroke="rgba(106,174,232,0.2)" stroke-width="0.8" stroke-dasharray="110 380" fill="none"/>
+            <circle cx="93" cy="0" r="3.5" fill="#6aaee8" opacity="0.8"/>
+            <circle cx="-78" cy="0" r="2.5" fill="#6aaee8" opacity="0.55"/>
+            <circle cx="0" cy="-93" r="2.5" fill="#6aaee8" opacity="0.5"/>
+            <circle cx="55" cy="55" r="2" fill="#6aaee8" opacity="0.4"/>
+            <circle cx="-65" cy="-65" r="2" fill="#6aaee8" opacity="0.35"/>
+          </g>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-saude">SAÚDE</span>
+        <span class="brand-digital">DIGITAL</span>
+        <div class="brand-sub">Mato Grosso</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Texto -->
+    <div class="text-side">
+      <div class="eyebrow">Estado de Mato Grosso · SES-MT</div>
+      <h1 class="main-title">Painel de<br /><em>Telessaúde</em></h1>
+      <p class="description">Plataforma oficial de saúde digital do Estado de Mato Grosso. Acesse serviços clínicos, telediagnósticos e especialidades ofertadas.</p>
+      <div class="modules">
+        <span class="module-tag">Sistema Clínico</span>
+        <span class="module-tag">Acesso do Paciente</span>
+        <span class="module-tag">Especialidades</span>
+        <span class="module-tag">Painel de BI</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-url">digital.saude.mt.gov.br</div>
+</body>
+</html>
