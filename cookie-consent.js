@@ -1,100 +1,139 @@
-// cookie-consent.js
 (function () {
     const COOKIE_KEY = 'uysi_cookie_consent';
-
-    const defaultPrefs = {
-        essential: true,
-        performance: false,
-        functional: false,
-        security: false
-    };
 
     function init() {
         if (localStorage.getItem(COOKIE_KEY)) {
             setupFooterListener();
             return;
         }
-
-        setTimeout(() => {
-            renderBanner();
-            setupFooterListener();
-        }, 1000);
+        setTimeout(renderBanner, 1000);
+        setupFooterListener();
     }
 
     function renderBanner() {
         if (document.getElementById('cookie-banner')) return;
-
-        const bannerHtml = `
+        const html = `
             <div id="cookie-banner" class="cookie-banner-container">
                 <div class="cookie-banner-content">
-                    <p>Utilizamos cookies para melhorar sua experiência. Acesse nossa <a href="/lgpd">Central de Privacidade</a>.</p>
+                    <button id="cc-close-banner" class="cc-close-btn" aria-label="Fechar">✕</button>
+                    <p>Utilizamos cookies para melhorar sua experiência e direcionamento. Acesse nossa <a href="https://uysi.vercel.app/lgpd" target="_blank">Central de Privacidade</a> para saber como processamos dados.</p>
                     <div class="cookie-actions">
-                        <button id="btn-accept-all" class="btn-primary">Aceitar</button>
-                        <button id="btn-reject-all" class="btn-secondary">Recusar</button>
-                        <button id="btn-manage" class="btn-link">Gerenciar</button>
+                        <button id="cc-accept" class="cc-btn cc-btn-primary">Aceitar</button>
+                        <button id="cc-reject" class="cc-btn cc-btn-secondary">Recusar</button>
+                        <button id="cc-manage" class="cc-btn cc-btn-link">Gerenciar Cookies</button>
                     </div>
                 </div>
-            </div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', bannerHtml);
-
-        document.getElementById('btn-accept-all').onclick = () => savePrefs({ essential: true, performance: true, functional: true, security: true });
-        document.getElementById('btn-reject-all').onclick = () => savePrefs({ essential: true, performance: false, functional: false, security: false });
-        document.getElementById('btn-manage').onclick = renderModal;
+            </div>`;
+        document.body.insertAdjacentHTML('beforeend', html);
+        document.getElementById('cc-accept').onclick = () => save({ essential: true, performance: true, functional: true, security: true });
+        document.getElementById('cc-reject').onclick = () => save({ essential: true, performance: false, functional: false, security: false });
+        document.getElementById('cc-close-banner').onclick = () => save({ essential: true, performance: false, functional: false, security: false });
+        document.getElementById('cc-manage').onclick = (e) => { e.preventDefault(); renderModal(); };
     }
 
     function renderModal() {
-        // Remove banner temporariamente se estiver aberto
         const banner = document.getElementById('cookie-banner');
         if (banner) banner.remove();
+        if (document.getElementById('cookie-modal')) return;
 
-        const modalHtml = `
+        const html = `
             <div id="cookie-modal" class="cookie-modal-overlay">
+                <div class="cookie-modal-backdrop"></div>
                 <div class="cookie-modal-card">
-                    <h3>Preferências de Cookies</h3>
-                    <div class="cookie-option">
-                        <span>Estritamente Necessários (Sempre Ativo)</span>
+                    <button id="cc-modal-close" class="cc-modal-close-btn">✕</button>
+                    
+                    <div class="cc-modal-header">
+                        <h3>Preferências de Cookies</h3>
+                        <p>Personalize as tecnologias de rastreamento do site. Suas escolhas serão processadas estritamente de acordo com a LGPD.</p>
                     </div>
-                    <div class="cookie-option">
-                        <label>Desempenho e Análise</label>
-                        <input type="checkbox" id="pref-performance">
+
+                    <div class="cc-modal-body">
+                        <!-- Essenciais -->
+                        <div class="cc-option-card cc-bg-gray">
+                            <div class="cc-option-row">
+                                <h4>Estritamente Necessários</h4>
+                                <span class="cc-badge-active">
+                                    <span class="cc-dot"></span> Sempre Ativo
+                                </span>
+                            </div>
+                            <p class="cc-desc">Essenciais para o funcionamento básico, segurança e sessão do usuário. Não podem ser inativados.</p>
+                        </div>
+
+                        <!-- Performance -->
+                        <div class="cc-option-card">
+                            <div class="cc-option-row">
+                                <h4>Desempenho e Análise</h4>
+                                <label class="cc-switch"><input type="checkbox" id="cc-p-perf"><span class="cc-slider"></span></label>
+                            </div>
+                            <p class="cc-desc">Coletam métricas de navegação anonimizadas para otimizar velocidade e UI.</p>
+                        </div>
+
+                        <!-- Funcional -->
+                        <div class="cc-option-card">
+                            <div class="cc-option-row">
+                                <h4>Funcionalidade e Personalização</h4>
+                                <label class="cc-switch"><input type="checkbox" id="cc-p-func"><span class="cc-slider"></span></label>
+                            </div>
+                            <p class="cc-desc">Memorizam suas escolhas locais e integram recursos avançados de sistema.</p>
+                        </div>
+
+                        <!-- Segurança -->
+                        <div class="cc-option-card">
+                            <div class="cc-option-row">
+                                <h4>Segurança Avançada</h4>
+                                <label class="cc-switch"><input type="checkbox" id="cc-p-sec"><span class="cc-slider"></span></label>
+                            </div>
+                            <p class="cc-desc">Validação extra de bots, prevenção de ataques e proteção de credenciais.</p>
+                        </div>
                     </div>
-                    <!-- Adicione as outras opções aqui -->
-                    <div class="modal-actions">
-                        <button id="btn-save-prefs">Salvar Preferências</button>
+
+                    <div class="cc-modal-footer">
+                        <button id="cc-save-prefs" class="cc-btn cc-btn-outline">Salvar Minhas Preferências</button>
+                        <button id="cc-accept-all" class="cc-btn cc-btn-dark">Aceitar Todos</button>
                     </div>
                 </div>
-            </div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', modalHtml);
+            </div>`;
 
-        document.getElementById('btn-save-prefs').onclick = () => {
-            const prefs = {
+        document.body.insertAdjacentHTML('beforeend', html);
+
+        // Handlers
+        document.querySelector('.cookie-modal-backdrop').onclick = closeModal;
+        document.getElementById('cc-modal-close').onclick = closeModal;
+
+        // Restaurar preferências salvas nos checkboxes
+        const saved = JSON.parse(localStorage.getItem(COOKIE_KEY) || 'null');
+        if (saved) {
+            document.getElementById('cc-p-perf').checked = !!saved.performance;
+            document.getElementById('cc-p-func').checked = !!saved.functional;
+            document.getElementById('cc-p-sec').checked  = !!saved.security;
+        }
+
+        document.getElementById('cc-accept-all').onclick = () => save({ essential: true, performance: true, functional: true, security: true });
+
+        document.getElementById('cc-save-prefs').onclick = () => {
+            save({
                 essential: true,
-                performance: document.getElementById('pref-performance').checked,
-                // ... pegar outros checkboxes
-            };
-            savePrefs(prefs);
-            document.getElementById('cookie-modal').remove();
+                performance: document.getElementById('cc-p-perf').checked,
+                functional: document.getElementById('cc-p-func').checked,
+                security: document.getElementById('cc-p-sec').checked
+            });
         };
     }
 
-    function savePrefs(prefs) {
+    function closeModal() {
+        document.getElementById('cookie-modal').remove();
+        if (!localStorage.getItem(COOKIE_KEY)) renderBanner();
+    }
+
+    function save(prefs) {
         localStorage.setItem(COOKIE_KEY, JSON.stringify(prefs));
-        const banner = document.getElementById('cookie-banner');
-        if (banner) banner.remove();
-        const modal = document.getElementById('cookie-modal');
-        if (modal) modal.remove();
+        if (document.getElementById('cookie-banner')) document.getElementById('cookie-banner').remove();
+        if (document.getElementById('cookie-modal')) document.getElementById('cookie-modal').remove();
     }
 
     function setupFooterListener() {
-        const trigger = document.getElementById('footer-cookie-prefs');
-        if (trigger) {
-            trigger.onclick = (e) => {
-                e.preventDefault();
-                renderModal();
-            };
-        }
+        const btn = document.getElementById('footer-cookie-prefs');
+        if (btn) btn.onclick = (e) => { e.preventDefault(); renderModal(); };
     }
 
     init();

@@ -1,170 +1,344 @@
-/* 
-   Cookie Consent Premium Styling 
-   Design: Glassmorphism, Modern Shadows & Smooth Transitions
-*/
-
-:root {
-    --cc-bg: rgba(255, 255, 255, 0.95);
-    --cc-text: #1e293b;
-    --cc-text-muted: #64748b;
-    --cc-border: rgba(226, 232, 240, 0.8);
-    --cc-primary: #0f172a;
-    --cc-primary-hover: #1e293b;
-    --cc-accent: #3b82f6;
-    --cc-shadow: 0 -10px 40px -15px rgba(0, 0, 0, 0.1);
-    --cc-radius: 1rem;
-    --cc-font: 'Inter', system-ui, -apple-system, sans-serif;
+/* Cookie Consent — Saúde Digital MT */
+.cookie-banner-container *,
+.cookie-modal-overlay * {
+    box-sizing: border-box !important;
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif !important;
 }
 
-/* Dark Mode Support (Automático) */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --cc-bg: rgba(15, 23, 42, 0.95);
-        --cc-text: #f1f5f9;
-        --cc-text-muted: #94a3b8;
-        --cc-border: rgba(30, 41, 59, 0.8);
-        --cc-primary: #f8fafc;
-        --cc-primary-hover: #ffffff;
-    }
-}
-
-/* Container do Banner */
+/* ─── Banner ─── */
 .cookie-banner-container {
-    position: fixed;
+    position: fixed !important;
     bottom: 0;
     left: 0;
     width: 100%;
-    z-index: 9999;
-    padding: 1.5rem;
+    z-index: 999998;
+    padding: 1.25rem 1.5rem;
     display: flex;
     justify-content: center;
-    pointer-events: none;
-    animation: cc-slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cookie-banner-content {
-    background: var(--cc-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--cc-border);
-    border-radius: var(--cc-radius);
-    padding: 1.25rem 2rem;
-    max-width: 1000px;
+    background: rgba(248, 251, 255, 0.92);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 16px;
+    padding: 1.1rem 1.75rem;
+    max-width: 1050px;
     width: 100%;
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
-    box-shadow: var(--cc-shadow);
-    pointer-events: auto;
-    font-family: var(--cc-font);
+    box-shadow:
+        0 -8px 32px rgba(11, 37, 80, 0.12),
+        0 2px 0 rgba(255, 255, 255, 0.9) inset;
+    position: relative;
 }
 
 .cookie-banner-content p {
-    margin: 0;
-    font-size: 0.875rem;
-    line-height: 1.5;
-    color: var(--cc-text);
+    font-size: 13.5px;
+    color: rgba(11, 37, 80, 0.65);
+    line-height: 1.55;
     flex: 1;
 }
 
-.cookie-banner-content a {
-    color: var(--cc-accent);
-    text-decoration: underline;
+.cookie-banner-content p a {
+    color: #2470d4;
+    text-decoration: none;
     font-weight: 600;
 }
 
-/* Botões */
+.cookie-banner-content p a:hover {
+    color: #1348a0;
+    text-decoration: underline;
+}
+
 .cookie-actions {
     display: flex;
-    gap: 0.75rem;
     align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
 }
 
+.cc-close-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: rgba(11, 37, 80, 0.3);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px;
+    line-height: 1;
+    transition: color 0.15s;
+}
+
+.cc-close-btn:hover {
+    color: #1348a0;
+}
+
+/* ─── Botões compartilhados ─── */
 .cc-btn {
-    padding: 0.625rem 1.25rem;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
+    padding: 0.6rem 1.25rem;
+    border-radius: 10px;
+    font-size: 13.5px;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s;
-    border: 1px solid transparent;
+    border: none;
+    transition:
+        transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+    white-space: nowrap;
 }
 
+.cc-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Botão primário — Aceitar / Aceitar Todos */
 .cc-btn-primary {
-    background: var(--cc-primary);
-    color: var(--cc-bg);
+    background: linear-gradient(135deg, #0b2550 0%, #1348a0 100%);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(11, 37, 80, 0.28), 0 1px 0 rgba(255, 255, 255, 0.12) inset;
 }
 
 .cc-btn-primary:hover {
-    background: var(--cc-primary-hover);
-    transform: translateY(-1px);
+    box-shadow: 0 8px 28px rgba(11, 37, 80, 0.34), 0 1px 0 rgba(255, 255, 255, 0.12) inset;
 }
 
+/* Botão secundário — Recusar / Salvar Preferências */
 .cc-btn-secondary {
-    background: transparent;
-    border-color: var(--cc-border);
-    color: var(--cc-text);
+    background: rgba(19, 72, 160, 0.07);
+    color: #0b2550;
+    border: 1px solid rgba(19, 72, 160, 0.55) !important;
+    box-shadow: 0 2px 8px rgba(11, 37, 80, 0.06);
 }
 
 .cc-btn-secondary:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(19, 72, 160, 0.12);
+    box-shadow: 0 6px 20px rgba(11, 37, 80, 0.10);
 }
 
+/* Botão link — Gerenciar Cookies */
 .cc-btn-link {
-    background: transparent;
-    color: var(--cc-text-muted);
-    text-decoration: underline;
-    padding: 0;
-    font-weight: 500;
+    background: none;
+    color: rgba(11, 37, 80, 0.45);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 0.5rem 0.6rem;
+    transition: color 0.15s;
 }
 
-/* Modal Overlay */
+.cc-btn-link:hover {
+    color: #2470d4;
+    transform: none;
+}
+
+/* ─── Modal Overlay ─── */
 .cookie-modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(4px);
-    z-index: 10000;
+    z-index: 999999;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    font-family: var(--cc-font);
 }
 
+.cookie-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 18, 46, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+/* ─── Modal Card ─── */
 .cookie-modal-card {
-    background: var(--cc-bg);
-    border-radius: 1.5rem;
+    position: relative;
+    background: rgba(248, 251, 255, 0.96);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 20px;
     width: 100%;
-    max-width: 500px;
+    max-width: 620px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
     padding: 2rem;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    animation: cc-fade-in 0.3s ease-out;
+    box-shadow:
+        0 32px 80px rgba(11, 37, 80, 0.22),
+        0 2px 0 rgba(255, 255, 255, 0.9) inset;
+    overflow: hidden;
 }
 
-.cookie-modal-card h3 {
+.cc-modal-close-btn {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    color: rgba(11, 37, 80, 0.35);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: color 0.15s, background 0.15s;
+}
+
+.cc-modal-close-btn:hover {
+    background: rgba(19, 72, 160, 0.07);
+    color: #1348a0;
+}
+
+.cc-modal-header {
     margin-bottom: 1.5rem;
-    color: var(--cc-text);
+    padding-right: 2rem;
 }
 
-.cookie-option {
+.cc-modal-header h3 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #0b2550;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.02em;
+}
+
+.cc-modal-header p {
+    font-size: 0.875rem;
+    color: rgba(11, 37, 80, 0.5);
+    line-height: 1.6;
+}
+
+.cc-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* ─── Cards de Opções ─── */
+.cc-option-card {
+    padding: 1.1rem 1.25rem;
+    border-radius: 12px;
+    border: 1px solid rgba(19, 72, 160, 0.12);
+    margin-bottom: 0.75rem;
+    background: rgba(248, 251, 255, 0.6);
+    transition: border-color 0.2s;
+}
+
+.cc-bg-gray {
+    background: rgba(240, 247, 255, 0.8) !important;
+    border-color: rgba(19, 72, 160, 0.08) !important;
+}
+
+.cc-option-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
-    background: rgba(0, 0, 0, 0.02);
-    border-radius: 0.75rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.4rem;
 }
 
-/* Switch UI */
+.cc-option-row h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #0b2550;
+}
+
+.cc-desc {
+    font-size: 0.8rem;
+    color: rgba(11, 37, 80, 0.5);
+    line-height: 1.5;
+}
+
+/* ─── Badge "Sempre Ativo" ─── */
+.cc-badge-active {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #059669;
+    background: #ecfdf5;
+    padding: 4px 12px;
+    border-radius: 99px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #d1fae5;
+}
+
+.cc-dot {
+    width: 6px;
+    height: 6px;
+    background: #10b981;
+    border-radius: 50%;
+}
+
+/* ─── Rodapé do Modal ─── */
+.cc-modal-footer {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(11, 37, 80, 0.07);
+}
+
+/* Aliases para os botões do modal */
+.cc-btn-outline {
+    flex: 1;
+    background: rgba(19, 72, 160, 0.07);
+    border: 1px solid rgba(19, 72, 160, 0.55) !important;
+    color: #0b2550;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 13.5px;
+    transition:
+        transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+    box-shadow: 0 2px 8px rgba(11, 37, 80, 0.06);
+}
+
+.cc-btn-outline:hover {
+    background: rgba(19, 72, 160, 0.12);
+    box-shadow: 0 6px 20px rgba(11, 37, 80, 0.10);
+    transform: translateY(-2px);
+}
+
+.cc-btn-dark {
+    flex: 1;
+    background: linear-gradient(135deg, #0b2550 0%, #1348a0 100%);
+    color: #fff;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 13.5px;
+    transition:
+        transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.18s ease;
+    box-shadow: 0 4px 16px rgba(11, 37, 80, 0.28), 0 1px 0 rgba(255, 255, 255, 0.12) inset;
+}
+
+.cc-btn-dark:hover {
+    box-shadow: 0 8px 28px rgba(11, 37, 80, 0.34), 0 1px 0 rgba(255, 255, 255, 0.12) inset;
+    transform: translateY(-2px);
+}
+
+/* ─── Switches ─── */
 .cc-switch {
     position: relative;
-    display: inline-block;
-    width: 40px;
-    height: 22px;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
 }
 
 .cc-switch input {
@@ -177,49 +351,28 @@
     position: absolute;
     cursor: pointer;
     inset: 0;
-    background: #cbd5e1;
+    background: rgba(19, 72, 160, 0.15);
     transition: .4s;
-    border-radius: 20px;
+    border-radius: 24px;
 }
 
 .cc-slider:before {
     position: absolute;
     content: "";
-    height: 16px;
-    width: 16px;
+    height: 18px;
+    width: 18px;
     left: 3px;
     bottom: 3px;
     background: white;
     transition: .4s;
     border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(11, 37, 80, 0.2);
 }
 
-input:checked+.cc-slider {
-    background: var(--cc-accent);
+input:checked + .cc-slider {
+    background: linear-gradient(135deg, #1348a0 0%, #2470d4 100%);
 }
 
-input:checked+.cc-slider:before {
-    transform: translateX(18px);
-}
-
-@keyframes cc-slide-up {
-    from {
-        transform: translateY(100%);
-    }
-
-    to {
-        transform: translateY(0);
-    }
-}
-
-@keyframes cc-fade-in {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+input:checked + .cc-slider:before {
+    transform: translateX(20px);
 }
