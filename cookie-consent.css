@@ -1,0 +1,225 @@
+/* 
+   Cookie Consent Premium Styling 
+   Design: Glassmorphism, Modern Shadows & Smooth Transitions
+*/
+
+:root {
+    --cc-bg: rgba(255, 255, 255, 0.95);
+    --cc-text: #1e293b;
+    --cc-text-muted: #64748b;
+    --cc-border: rgba(226, 232, 240, 0.8);
+    --cc-primary: #0f172a;
+    --cc-primary-hover: #1e293b;
+    --cc-accent: #3b82f6;
+    --cc-shadow: 0 -10px 40px -15px rgba(0, 0, 0, 0.1);
+    --cc-radius: 1rem;
+    --cc-font: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Dark Mode Support (Automático) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --cc-bg: rgba(15, 23, 42, 0.95);
+        --cc-text: #f1f5f9;
+        --cc-text-muted: #94a3b8;
+        --cc-border: rgba(30, 41, 59, 0.8);
+        --cc-primary: #f8fafc;
+        --cc-primary-hover: #ffffff;
+    }
+}
+
+/* Container do Banner */
+.cookie-banner-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    animation: cc-slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cookie-banner-content {
+    background: var(--cc-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius);
+    padding: 1.25rem 2rem;
+    max-width: 1000px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    box-shadow: var(--cc-shadow);
+    pointer-events: auto;
+    font-family: var(--cc-font);
+}
+
+.cookie-banner-content p {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--cc-text);
+    flex: 1;
+}
+
+.cookie-banner-content a {
+    color: var(--cc-accent);
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+/* Botões */
+.cookie-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.cc-btn {
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.cc-btn-primary {
+    background: var(--cc-primary);
+    color: var(--cc-bg);
+}
+
+.cc-btn-primary:hover {
+    background: var(--cc-primary-hover);
+    transform: translateY(-1px);
+}
+
+.cc-btn-secondary {
+    background: transparent;
+    border-color: var(--cc-border);
+    color: var(--cc-text);
+}
+
+.cc-btn-secondary:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.cc-btn-link {
+    background: transparent;
+    color: var(--cc-text-muted);
+    text-decoration: underline;
+    padding: 0;
+    font-weight: 500;
+}
+
+/* Modal Overlay */
+.cookie-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    font-family: var(--cc-font);
+}
+
+.cookie-modal-card {
+    background: var(--cc-bg);
+    border-radius: 1.5rem;
+    width: 100%;
+    max-width: 500px;
+    padding: 2rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: cc-fade-in 0.3s ease-out;
+}
+
+.cookie-modal-card h3 {
+    margin-bottom: 1.5rem;
+    color: var(--cc-text);
+}
+
+.cookie-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Switch UI */
+.cc-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+}
+
+.cc-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.cc-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: #cbd5e1;
+    transition: .4s;
+    border-radius: 20px;
+}
+
+.cc-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked+.cc-slider {
+    background: var(--cc-accent);
+}
+
+input:checked+.cc-slider:before {
+    transform: translateX(18px);
+}
+
+@keyframes cc-slide-up {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes cc-fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
