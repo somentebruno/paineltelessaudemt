@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entrar — Saúde Digital MT</title>
+  <link rel="icon" type="image/png" href="assets/mt-mapa-nos.png" />
+  <meta name="description" content="Acesse a plataforma de Telessaúde do Estado de Mato Grosso." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#0b2550" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,300&family=Nunito:wght@400;500;800&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --blue-900: #0b2550;
+      --blue-700: #1348a0;
+      --blue-500: #2470d4;
+      --blue-300: #6aaee8;
+      --blue-100: #dceeff;
+      --blue-50:  #f0f7ff;
+      --white:    #f8fbff;
+      --red-500:  #c0392b;
+      --red-100:  #fdecea;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Nunito', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Canvas background ─── */
+    #bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background:
+        radial-gradient(ellipse 55% 70% at 8% 50%, rgba(11, 37, 80, 0.38) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 50% at 92% 10%, rgba(36, 112, 212, 0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    /* ─── Layout ─── */
+    .screen {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    .card-with-footer {
+      display: flex;
+      flex-direction: column;
+      max-width: 860px;
+      width: 100%;
+      background: rgba(248, 251, 255, 0.78);
+      backdrop-filter: blur(24px) saturate(1.4);
+      -webkit-backdrop-filter: blur(24px) saturate(1.4);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 24px;
+      box-shadow:
+        0 2px 0 rgba(255, 255, 255, 0.9) inset,
+        0 32px 80px rgba(11, 37, 80, 0.18),
+        0 8px 24px rgba(11, 37, 80, 0.10);
+      overflow: hidden;
+      animation: cardIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .card-body {
+      display: flex;
+      align-items: stretch;
+    }
+
+    /* ─── Divider vertical ─── */
+    .divider {
+      width: 1px;
+      align-self: stretch;
+      background: linear-gradient(180deg,
+          transparent 0%,
+          rgba(19, 72, 160, 0.18) 20%,
+          rgba(19, 72, 160, 0.18) 80%,
+          transparent 100%);
+      flex-shrink: 0;
+    }
+
+    /* ─── LEFT: identidade ─── */
+    .left {
+      padding: 40px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      min-width: 240px;
+      animation: fadeUp 0.6s 0.15s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 126px;
+      height: 108px;
+      flex-shrink: 0;
+      overflow: visible;
+    }
+
+    .logo-map-img {
+      width: 112px;
+      height: auto;
+      display: block;
+      position: relative;
+      z-index: 1;
+      clip-path: path('M 0 0 L 112 0 L 112 110 L 0 110 Z M 0 38 L 0 57 L 13 57 L 13 38 Z');
+    }
+
+    .logo-orbit-svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 208px;
+      height: 208px;
+      pointer-events: none;
+      z-index: 0;
+      overflow: visible;
+    }
+
+    .logo-text {
+      text-align: center;
+      margin-top: 26px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .logo-text-main {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      color: #0e2963;
+      letter-spacing: 0.04em;
+      line-height: 1.0;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .lt-saude  { font-size: 23px; }
+    .lt-digital{ font-size: 20px; }
+
+    .logo-text-sub {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+      color: #0e2963;
+      letter-spacing: 0.06em;
+      margin-top: -4px;
+    }
+
+    .logo-ses {
+      display: block;
+      width: 169px;
+      height: auto;
+      margin: 10px auto 0;
+      opacity: 0.85;
+    }
+
+    .sep {
+      width: 32px;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, var(--blue-300), transparent);
+      border-radius: 2px;
+    }
+
+    .gov-label {
+      font-size: 10.5px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: rgba(11, 37, 80, 0.45);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* ─── RIGHT: formulário ─── */
+    .right {
+      padding: 48px 52px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      animation: fadeUp 0.6s 0.25s ease both;
+    }
+
+    .welcome-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--blue-500);
+      margin-bottom: 10px;
+    }
+
+    .welcome-title {
+      font-family: 'Nunito', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.08;
+      color: var(--blue-900);
+      letter-spacing: -0.025em;
+    }
+
+    .welcome-title em {
+      font-style: normal;
+      color: var(--blue-700);
+    }
+
+    .welcome-desc {
+      margin-top: 10px;
+      font-size: 14px;
+      color: rgba(11, 37, 80, 0.5);
+      font-weight: 400;
+      line-height: 1.55;
+    }
+
+    /* ─── Form ─── */
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(11, 37, 80, 0.55);
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      color: rgba(11, 37, 80, 0.38);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      padding: 12px 14px 12px 42px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14.5px;
+      font-weight: 500;
+      color: var(--blue-900);
+      background: rgba(255, 255, 255, 0.72);
+      border: 1.5px solid rgba(19, 72, 160, 0.22);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+      -webkit-appearance: none;
+    }
+
+    .input-wrap input::placeholder {
+      color: rgba(11, 37, 80, 0.28);
+      font-weight: 400;
+    }
+
+    .input-wrap input:focus {
+      border-color: var(--blue-500);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 0 0 3px rgba(36, 112, 212, 0.14);
+    }
+
+    .input-wrap input.invalid {
+      border-color: var(--red-500);
+      box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.10);
+    }
+
+    /* Toggle visibilidade senha */
+    .btn-toggle-pw {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: rgba(11, 37, 80, 0.38);
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      border-radius: 6px;
+      transition: color 0.15s;
+    }
+
+    .btn-toggle-pw:hover { color: var(--blue-700); }
+    .btn-toggle-pw:focus-visible {
+      outline: 2px solid var(--blue-700);
+      outline-offset: 1px;
+    }
+
+    .field-error {
+      font-size: 11.5px;
+      color: var(--red-500);
+      display: none;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+    }
+
+    .field-error.visible {
+      display: flex;
+    }
+
+    /* ─── Row: lembrar + esqueceu ─── */
+    .form-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: -4px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(11, 37, 80, 0.6);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid rgba(19, 72, 160, 0.35);
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s, border-color 0.15s;
+      position: relative;
+    }
+
+    .checkbox-label input[type="checkbox"]:checked {
+      background: var(--blue-700);
+      border-color: var(--blue-700);
+    }
+
+    .checkbox-label input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 4px;
+      width: 5px;
+      height: 9px;
+      border: 2px solid #fff;
+      border-top: none;
+      border-left: none;
+      transform: rotate(40deg);
+    }
+
+    .checkbox-label input[type="checkbox"]:focus-visible {
+      outline: 2px solid var(--blue-700);
+      outline-offset: 2px;
+    }
+
+    .forgot-link {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--blue-500);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 0.15s;
+      white-space: nowrap;
+    }
+
+    .forgot-link:hover { color: var(--blue-700); text-decoration: underline; }
+
+    /* ─── Alerta global ─── */
+    .alert {
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+
+    .alert.visible { display: flex; }
+
+    .alert-error {
+      background: var(--red-100);
+      color: var(--red-500);
+      border: 1px solid rgba(192, 57, 43, 0.2);
+    }
+
+    .alert svg { flex-shrink: 0; margin-top: 1px; }
+
+    /* ─── Botões ─── */
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      border: none;
+      transition:
+        transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.18s ease,
+        background 0.18s ease,
+        opacity 0.18s;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .btn:hover:not(:disabled) { transform: translateY(-2px); }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    .btn:focus-visible {
+      outline: 3px solid var(--blue-700);
+      outline-offset: 3px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-700) 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(11, 37, 80, 0.28), 0 1px 0 rgba(255,255,255,0.12) inset;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      box-shadow: 0 8px 28px rgba(11, 37, 80, 0.34), 0 1px 0 rgba(255,255,255,0.12) inset;
+    }
+
+    .btn-back {
+      background: rgba(19, 72, 160, 0.06);
+      color: var(--blue-900);
+      border: 1px solid rgba(19, 72, 160, 0.55);
+      box-shadow: 0 2px 8px rgba(11, 37, 80, 0.05);
+      font-weight: 600;
+    }
+
+    .btn-back:hover:not(:disabled) {
+      background: rgba(19, 72, 160, 0.10);
+      box-shadow: 0 6px 20px rgba(11, 37, 80, 0.08);
+    }
+
+    /* Spinner dentro do botão */
+    .btn-spinner {
+      display: none;
+      width: 16px;
+      height: 16px;
+      border: 2.5px solid rgba(255,255,255,0.35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .btn-primary.loading .btn-spinner { display: block; }
+    .btn-primary.loading .btn-label  { display: none; }
+
+    /* ─── Footer ─── */
+    .card-footer {
+      padding: 14px 48px;
+      background: rgba(11, 37, 80, 0.03);
+      border-top: 1px solid rgba(11, 37, 80, 0.07);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-text {
+      font-size: 12px;
+      color: rgba(11, 37, 80, 0.4);
+      white-space: nowrap;
+    }
+
+    .footer-text a {
+      color: var(--blue-500);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: rgba(11, 37, 80, 0.35);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
+    .footer-badge svg {
+      width: 12px;
+      height: 12px;
+      color: var(--blue-300);
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .footer-links a {
+      font-size: 11px;
+      color: rgba(11, 37, 80, 0.38);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--blue-500); }
+
+    .footer-links span {
+      width: 1px;
+      height: 10px;
+      background: rgba(11, 37, 80, 0.15);
+    }
+
+    /* ─── Barra de Acessibilidade ─── */
+    .a11y-bar {
+      position: fixed;
+      top: 14px;
+      right: 16px;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      background: rgba(248, 251, 255, 0.92);
+      backdrop-filter: blur(14px) saturate(1.3);
+      -webkit-backdrop-filter: blur(14px) saturate(1.3);
+      border: 1px solid rgba(19, 72, 160, 0.22);
+      border-radius: 10px;
+      padding: 4px;
+      box-shadow: 0 4px 16px rgba(11, 37, 80, 0.12), 0 1px 0 rgba(255,255,255,0.8) inset;
+    }
+
+    .a11y-btn {
+      width: 34px;
+      height: 34px;
+      border: none;
+      background: none;
+      border-radius: 7px;
+      cursor: pointer;
+      color: var(--blue-900);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, color 0.15s;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .a11y-btn:hover { background: rgba(19, 72, 160, 0.09); }
+    .a11y-btn:focus-visible { outline: 2px solid var(--blue-700); outline-offset: 2px; }
+    .a11y-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .a11y-btn[aria-pressed="true"] { background: var(--blue-900); color: #fff; }
+    .a11y-btn[aria-pressed="true"]:hover { background: var(--blue-700); }
+
+    .a11y-sep {
+      width: 1px;
+      height: 18px;
+      background: rgba(19, 72, 160, 0.15);
+      flex-shrink: 0;
+      margin: 0 2px;
+    }
+
+    .a11y-font-label {
+      font-size: 13px;
+      font-weight: 800;
+      font-family: 'Nunito', sans-serif;
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    .a11y-font-label.sm { font-size: 10px; }
+    .a11y-font-label.lg { font-size: 17px; }
+
+    /* ─── Alto Contraste ─── */
+    html[data-contrast="high"] #bg     { display: none; }
+    html[data-contrast="high"] .overlay{ background: #fff; }
+    html[data-contrast="high"] .screen { background: #fff; }
+
+    html[data-contrast="high"] .card-with-footer {
+      background: #ffffff;
+      border: 2px solid #000000;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      box-shadow: none;
+    }
+
+    html[data-contrast="high"] .card-footer {
+      background: #f0f0f0;
+      border-top: 2px solid #000;
+    }
+
+    html[data-contrast="high"] .divider { background: #000; width: 2px; }
+
+    html[data-contrast="high"] .welcome-title,
+    html[data-contrast="high"] .welcome-eyebrow,
+    html[data-contrast="high"] .welcome-desc,
+    html[data-contrast="high"] .gov-label,
+    html[data-contrast="high"] .logo-text-main,
+    html[data-contrast="high"] .logo-text-sub,
+    html[data-contrast="high"] .footer-text,
+    html[data-contrast="high"] .footer-links a,
+    html[data-contrast="high"] .footer-badge,
+    html[data-contrast="high"] .field label,
+    html[data-contrast="high"] .checkbox-label { color: #000000; }
+
+    html[data-contrast="high"] .input-wrap input {
+      background: #fff;
+      border: 2px solid #000;
+      color: #000;
+    }
+
+    html[data-contrast="high"] .btn-primary {
+      background: #000066;
+      border: 2px solid #000000;
+      color: #ffffff;
+      box-shadow: none;
+    }
+
+    html[data-contrast="high"] .btn-primary:hover:not(:disabled) { background: #000099; }
+
+    html[data-contrast="high"] .btn-back {
+      background: #ffffff;
+      border: 2px solid #000066;
+      color: #000066;
+      box-shadow: none;
+    }
+
+    html[data-contrast="high"] .btn-back:hover:not(:disabled) { background: #e8e8ff; }
+
+    html[data-contrast="high"] .btn:focus-visible { outline: 3px solid #000000; }
+
+    html[data-contrast="high"] .a11y-bar {
+      background: #ffffff;
+      border: 2px solid #000000;
+      box-shadow: none;
+    }
+
+    html[data-contrast="high"] .a11y-btn { color: #000000; }
+
+    html[data-contrast="high"] .a11y-btn[aria-pressed="true"] {
+      background: #000066;
+      color: #ffffff;
+    }
+
+    /* ─── Tablet (≤ 860px) ─── */
+    @media (max-width: 860px) {
+      .screen { padding: 24px 16px; align-items: flex-start; }
+      .card-with-footer { border-radius: 18px; }
+      .left { padding: 28px 20px 20px; min-width: unset; }
+      .right { padding: 32px 36px 36px; gap: 22px; }
+      .welcome-title { font-size: 28px; }
+      .card-footer {
+        padding: 12px 32px;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .footer-text { width: 100%; text-align: center; }
+    }
+
+    /* ─── Mobile (≤ 600px) ─── */
+    @media (max-width: 600px) {
+      html, body { overflow: auto; }
+
+      .screen {
+        padding: 16px 12px 32px;
+        align-items: flex-start;
+        min-height: 100svh;
+      }
+
+      .card-with-footer { border-radius: 16px; }
+      .card-body { flex-direction: column; }
+
+      .divider {
+        width: 100%;
+        height: 1px;
+        align-self: auto;
+        background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(19, 72, 160, 0.18) 20%,
+            rgba(19, 72, 160, 0.18) 80%,
+            transparent 100%);
+      }
+
+      .left {
+        padding: 28px 20px 20px;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .logo-wrap { margin-top: 12px; width: 96px; height: 82px; }
+      .logo-map-img {
+        width: 86px;
+        clip-path: path('M 0 0 L 86 0 L 86 85 L 0 85 Z M 0 28 L 0 46 L 10 46 L 10 28 Z');
+      }
+      .logo-orbit-svg { width: 168px; height: 168px; }
+      .logo-text { margin-top: 16px; }
+      .lt-saude   { font-size: 20px; }
+      .lt-digital { font-size: 17px; }
+      .logo-text-sub { font-size: 12px; }
+      .logo-ses { width: 120px; }
+
+      .right { padding: 24px 20px 28px; gap: 18px; }
+
+      .welcome-eyebrow { font-size: 10px; margin-bottom: 6px; }
+      .welcome-title   { font-size: 24px; }
+      .welcome-desc    { font-size: 13px; margin-top: 6px; }
+
+      .btn { padding: 13px 16px; font-size: 14px; }
+
+      .card-footer {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 20px;
+        text-align: center;
+      }
+
+      .footer-text { white-space: normal; text-align: center; }
+      .footer-links { gap: 10px; flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barra de Acessibilidade -->
+  <div class="a11y-bar" role="toolbar" aria-label="Opções de acessibilidade">
+    <button class="a11y-btn" id="btnFontDecrease" aria-label="Diminuir tamanho da fonte" title="Diminuir fonte" disabled>
+      <span class="a11y-font-label sm" aria-hidden="true">A−</span>
+    </button>
+    <button class="a11y-btn" id="btnFontIncrease" aria-label="Aumentar tamanho da fonte" title="Aumentar fonte">
+      <span class="a11y-font-label lg" aria-hidden="true">A+</span>
+    </button>
+    <span class="a11y-sep" role="separator"></span>
+    <button class="a11y-btn" id="btnContrast" aria-label="Alternar alto contraste" title="Alto contraste" aria-pressed="false">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Canvas para partículas animadas -->
+  <canvas id="bg"></canvas>
+  <div class="overlay"></div>
+
+  <main class="screen">
+    <div class="card-with-footer">
+      <div class="card-body">
+
+        <!-- LEFT: Identidade -->
+        <div class="left">
+          <div class="logo-wrap">
+            <img class="logo-map-img" src="assets/mt-mapa-nos.png" alt="Mapa do Mato Grosso" />
+
+            <!-- Elipses orbitais animadas por cima -->
+            <svg class="logo-orbit-svg" viewBox="0 0 250 250" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <filter id="glow-orbit" x="-60%" y="-60%" width="220%" height="220%">
+                  <feGaussianBlur stdDeviation="1.5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              <g transform="translate(125,125)">
+                <!-- Órbita externa — círculo perfeito -->
+                <circle r="93" stroke="rgba(36,112,212,0.22)" stroke-width="1.3" stroke-dasharray="160 424" fill="none">
+                  <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s"
+                    repeatCount="indefinite" />
+                </circle>
+                <!-- Órbita interna — círculo perfeito, sentido oposto -->
+                <circle r="78" stroke="rgba(36,112,212,0.14)" stroke-width="0.9" stroke-dasharray="110 380" fill="none">
+                  <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="28s"
+                    repeatCount="indefinite" />
+                </circle>
+                <!-- Pontinhos orbitais -->
+                <circle cx="93" cy="0" r="3" fill="#2470d4" opacity="0.75" filter="url(#glow-orbit)">
+                  <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s"
+                    repeatCount="indefinite" />
+                </circle>
+                <circle cx="-69" cy="-63" r="2.5" fill="#2470d4" opacity="0.55" filter="url(#glow-orbit)">
+                  <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s"
+                    repeatCount="indefinite" />
+                </circle>
+
+                <circle cx="0" cy="-78" r="2.2" fill="#1a56a0" opacity="0.40" filter="url(#glow-orbit)">
+                  <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="28s"
+                    repeatCount="indefinite" />
+                </circle>
+                <circle cx="55" cy="55" r="2" fill="#2470d4" opacity="0.35" filter="url(#glow-orbit)">
+                  <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="28s"
+                    repeatCount="indefinite" />
+                </circle>
+              </g>
+            </svg>
+          </div>
+
+          <div class="logo-text">
+            <div class="logo-text-main">
+              <span class="lt-saude">SAÚDE</span>
+              <span class="lt-digital">DIGITAL</span>
+            </div>
+            <div class="logo-text-sub">Mato Grosso</div>
+            <img src="uploads/logo-ses-vetor.png" alt="SES Mato Grosso" class="logo-ses" />
+          </div>
+
+          <div class="sep"></div>
+          <p class="gov-label">Secretaria de Estado<br>de Saúde de MT</p>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- RIGHT: Login -->
+        <div class="right">
+          <div>
+            <div class="welcome-eyebrow">Acesso seguro</div>
+            <h1 class="welcome-title">Entrar na<br><em>plataforma</em></h1>
+            <p class="welcome-desc">Informe suas credenciais para acessar o sistema.</p>
+          </div>
+
+          <!-- Alerta de erro -->
+          <div class="alert alert-error" id="alertError" role="alert" aria-live="polite">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <circle cx="12" cy="16" r="1" fill="currentColor" stroke="none" />
+            </svg>
+            <span id="alertErrorMsg">Usuário ou senha incorretos. Verifique e tente novamente.</span>
+          </div>
+
+          <form class="form" id="loginForm" novalidate autocomplete="on">
+
+            <!-- CPF / E-mail -->
+            <div class="field">
+              <label for="inputUser">CPF ou E-mail</label>
+              <div class="input-wrap">
+                <span class="input-icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M4 20a8 8 0 0 1 16 0" />
+                  </svg>
+                </span>
+                <input
+                  type="text"
+                  id="inputUser"
+                  name="username"
+                  autocomplete="username"
+                  placeholder="000.000.000-00 ou seu@email.com"
+                  aria-required="true"
+                  aria-describedby="errorUser"
+                />
+              </div>
+              <span class="field-error" id="errorUser">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <circle cx="12" cy="16" r="1" fill="currentColor" stroke="none" />
+                </svg>
+                Informe seu CPF ou e-mail.
+              </span>
+            </div>
+
+            <!-- Senha -->
+            <div class="field">
+              <label for="inputPassword">Senha</label>
+              <div class="input-wrap">
+                <span class="input-icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </span>
+                <input
+                  type="password"
+                  id="inputPassword"
+                  name="password"
+                  autocomplete="current-password"
+                  placeholder="Sua senha"
+                  aria-required="true"
+                  aria-describedby="errorPassword"
+                  style="padding-right: 44px;"
+                />
+                <button type="button" class="btn-toggle-pw" id="btnTogglePw" aria-label="Mostrar senha" title="Mostrar/ocultar senha">
+                  <!-- Eye icon (senha oculta) -->
+                  <svg id="iconEye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  <!-- Eye-off icon (senha visível) -->
+                  <svg id="iconEyeOff" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                    style="display:none">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                    <line x1="1" y1="1" x2="23" y2="23" />
+                  </svg>
+                </button>
+              </div>
+              <span class="field-error" id="errorPassword">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <circle cx="12" cy="16" r="1" fill="currentColor" stroke="none" />
+                </svg>
+                Informe sua senha.
+              </span>
+            </div>
+
+            <!-- Lembrar + Esqueceu -->
+            <div class="form-meta">
+              <label class="checkbox-label">
+                <input type="checkbox" id="chkRemember" name="remember" />
+                Lembrar-me
+              </label>
+              <a href="#" class="forgot-link" id="btnForgot">Esqueceu a senha?</a>
+            </div>
+
+            <!-- Ações -->
+            <div class="actions">
+              <button type="submit" class="btn btn-primary" id="btnLogin">
+                <span class="btn-spinner" aria-hidden="true"></span>
+                <span class="btn-label">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                    <polyline points="10 17 15 12 10 7" />
+                    <line x1="15" y1="12" x2="3" y2="12" />
+                  </svg>
+                  Entrar
+                </span>
+              </button>
+
+              <a href="index.html" class="btn btn-back">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                Voltar ao início
+              </a>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer">
+        <span class="footer-text">Dúvidas? <a href="mailto:saudedigitalmt@ses.mt.gov.br">Fale com o suporte</a></span>
+        <nav class="footer-links">
+          <a href="https://uysi.vercel.app/politica-privacidade" target="_blank" rel="noopener">Política de Privacidade</a>
+          <span></span>
+          <a href="https://uysi.vercel.app/termos-de-uso" target="_blank" rel="noopener">Termos de Uso</a>
+        </nav>
+        <span class="footer-badge">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M8 1L2 3.5v4C2 11 5 14 8 15c3-1 6-4 6-7.5v-4L8 1z" />
+          </svg>
+          Conexão segura
+        </span>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // ─── Animated particle network ────────────────────────────────────────
+    const canvas = document.getElementById('bg');
+    const ctx = canvas.getContext('2d');
+
+    const BG_TOP = { r: 194, g: 221, b: 245 };
+    const BG_BOT = { r: 235, g: 246, b: 255 };
+    const DOT_COLOR  = 'rgba(19,72,160,';
+    const LINE_COLOR = 'rgba(36,112,212,';
+
+    let W, H, particles;
+    const N = 55;
+    const MAX_DIST = 160;
+    const SPEED = 0.35;
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function makeParticle() {
+      return {
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * SPEED,
+        vy: (Math.random() - 0.5) * SPEED,
+        r: Math.random() * 2 + 1.5,
+        opacity: Math.random() * 0.5 + 0.2,
+      };
+    }
+
+    function init() {
+      resize();
+      particles = Array.from({ length: N }, makeParticle);
+    }
+
+    function drawBg() {
+      const grd = ctx.createLinearGradient(0, 0, W * 0.4, H);
+      grd.addColorStop(0, `rgb(${BG_TOP.r},${BG_TOP.g},${BG_TOP.b})`);
+      grd.addColorStop(0.5, `rgb(${lerp(BG_TOP.r,BG_BOT.r,0.5)|0},${lerp(BG_TOP.g,BG_BOT.g,0.5)|0},${lerp(BG_TOP.b,BG_BOT.b,0.5)|0})`);
+      grd.addColorStop(1, `rgb(${BG_BOT.r},${BG_BOT.g},${BG_BOT.b})`);
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, W, H);
+
+      const blob = ctx.createRadialGradient(W * 0.05, H * 0.55, 0, W * 0.05, H * 0.55, W * 0.35);
+      blob.addColorStop(0, 'rgba(11,37,80,0.32)');
+      blob.addColorStop(0.6, 'rgba(19,72,160,0.10)');
+      blob.addColorStop(1, 'transparent');
+      ctx.fillStyle = blob;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    function tick() {
+      ctx.clearRect(0, 0, W, H);
+      drawBg();
+
+      for (const p of particles) {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+      }
+
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const a = particles[i], b = particles[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < MAX_DIST) {
+            ctx.strokeStyle = `${LINE_COLOR}${(1 - dist / MAX_DIST) * 0.22})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      for (const p of particles) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `${DOT_COLOR}${p.opacity})`;
+        ctx.fill();
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    window.addEventListener('resize', resize);
+    init();
+    tick();
+
+    // ─── Toggle visibilidade da senha ──────────────────────────────────────
+    const inputPw    = document.getElementById('inputPassword');
+    const btnToggle  = document.getElementById('btnTogglePw');
+    const iconEye    = document.getElementById('iconEye');
+    const iconEyeOff = document.getElementById('iconEyeOff');
+
+    btnToggle.addEventListener('click', () => {
+      const visible = inputPw.type === 'text';
+      inputPw.type = visible ? 'password' : 'text';
+      iconEye.style.display    = visible ? '' : 'none';
+      iconEyeOff.style.display = visible ? 'none' : '';
+      btnToggle.setAttribute('aria-label', visible ? 'Mostrar senha' : 'Ocultar senha');
+    });
+
+    // ─── Validação e submit ────────────────────────────────────────────────
+    const form        = document.getElementById('loginForm');
+    const inputUser   = document.getElementById('inputUser');
+    const errorUser   = document.getElementById('errorUser');
+    const errorPw     = document.getElementById('errorPassword');
+    const alertError  = document.getElementById('alertError');
+    const btnLogin    = document.getElementById('btnLogin');
+
+    function clearErrors() {
+      inputUser.classList.remove('invalid');
+      inputPw.classList.remove('invalid');
+      errorUser.classList.remove('visible');
+      errorPw.classList.remove('visible');
+      alertError.classList.remove('visible');
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearErrors();
+
+      let valid = true;
+
+      if (!inputUser.value.trim()) {
+        inputUser.classList.add('invalid');
+        errorUser.classList.add('visible');
+        valid = false;
+      }
+
+      if (!inputPw.value) {
+        inputPw.classList.add('invalid');
+        errorPw.classList.add('visible');
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      // Simula requisição (substitua pela integração real)
+      btnLogin.classList.add('loading');
+      btnLogin.disabled = true;
+
+      await new Promise(r => setTimeout(r, 1400));
+
+      btnLogin.classList.remove('loading');
+      btnLogin.disabled = false;
+
+      // Exibe erro de credenciais (lógica real depende do backend)
+      alertError.classList.add('visible');
+      inputUser.classList.add('invalid');
+      inputPw.classList.add('invalid');
+    });
+
+    // Limpa erros ao digitar
+    inputUser.addEventListener('input', clearErrors);
+    inputPw.addEventListener('input', clearErrors);
+
+    // ─── Link "Esqueceu a senha" ───────────────────────────────────────────
+    document.getElementById('btnForgot').addEventListener('click', (e) => {
+      e.preventDefault();
+      alert('Para redefinir sua senha, entre em contato com o suporte:\n\n(65) 98433-1542\nsaudedigitalmt@ses.mt.gov.br');
+    });
+
+    // ─── Acessibilidade: fonte e contraste ────────────────────────────────
+    (function () {
+      const STEP = 0.15;
+      const MIN  = 1;
+      const MAX  = 1.45;
+      const SELECTOR = [
+        '.welcome-title', '.welcome-eyebrow', '.welcome-desc',
+        '.field label', '.btn', '.footer-text', '.footer-links a',
+        '.footer-badge', '.gov-label', '.checkbox-label', '.forgot-link',
+        '.input-wrap input'
+      ].join(',');
+
+      let scale = 1;
+      let hiContrast = false;
+
+      const btnDec = document.getElementById('btnFontDecrease');
+      const btnInc = document.getElementById('btnFontIncrease');
+      const btnCon = document.getElementById('btnContrast');
+
+      function captureBase() {
+        document.querySelectorAll(SELECTOR).forEach(el => {
+          if (!el.dataset.baseFs)
+            el.dataset.baseFs = parseFloat(getComputedStyle(el).fontSize);
+        });
+      }
+
+      function applyScale(s) {
+        scale = Math.max(MIN, Math.min(MAX, s));
+        document.querySelectorAll(SELECTOR).forEach(el => {
+          el.style.fontSize = (parseFloat(el.dataset.baseFs) * scale) + 'px';
+        });
+        btnDec.disabled = scale <= MIN;
+        btnInc.disabled = scale >= MAX;
+        try { localStorage.setItem('a11y-scale', scale); } catch (_) {}
+      }
+
+      function applyContrast(on) {
+        hiContrast = on;
+        document.documentElement.dataset.contrast = on ? 'high' : 'normal';
+        btnCon.setAttribute('aria-pressed', String(on));
+        try { localStorage.setItem('a11y-contrast', on); } catch (_) {}
+      }
+
+      captureBase();
+
+      try {
+        const savedScale = parseFloat(localStorage.getItem('a11y-scale'));
+        if (savedScale && savedScale > 1) applyScale(savedScale);
+        if (localStorage.getItem('a11y-contrast') === 'true') applyContrast(true);
+      } catch (_) {}
+
+      btnDec.addEventListener('click', () => applyScale(scale - STEP));
+      btnInc.addEventListener('click', () => applyScale(scale + STEP));
+      btnCon.addEventListener('click', () => applyContrast(!hiContrast));
+    })();
+  </script>
+
+</body>
+</html>

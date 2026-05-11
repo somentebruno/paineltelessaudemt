@@ -191,6 +191,7 @@
       display: block;
       position: relative;
       z-index: 1;
+      clip-path: path('M 0 0 L 112 0 L 112 110 L 0 110 Z M 0 38 L 0 57 L 13 57 L 13 38 Z');
     }
 
     .logo-orbit-svg {
@@ -764,6 +765,7 @@
 
       .logo-map-img {
         width: 86px;
+        clip-path: path('M 0 0 L 86 0 L 86 85 L 0 85 Z M 0 28 L 0 46 L 10 46 L 10 28 Z');
       }
 
       .logo-orbit-svg {
@@ -1106,10 +1108,7 @@
                   <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s"
                     repeatCount="indefinite" />
                 </circle>
-                <circle cx="-78" cy="0" r="2.5" fill="#1a56a0" opacity="0.50" filter="url(#glow-orbit)">
-                  <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="28s"
-                    repeatCount="indefinite" />
-                </circle>
+
                 <circle cx="0" cy="-78" r="2.2" fill="#1a56a0" opacity="0.40" filter="url(#glow-orbit)">
                   <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="28s"
                     repeatCount="indefinite" />
