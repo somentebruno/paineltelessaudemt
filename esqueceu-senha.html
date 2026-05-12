@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Entrar — Saúde Digital MT</title>
+  <title>Esqueceu a senha? — Saúde Digital MT</title>
   <link rel="icon" type="image/png" href="assets/mt-mapa-nos.png" />
-  <meta name="description" content="Acesse a plataforma de Telessaúde do Estado de Mato Grosso." />
+  <meta name="description" content="Redefina sua senha na plataforma de Telessaúde do Estado de Mato Grosso." />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#0b2550" />
 
@@ -35,6 +35,8 @@
       --white: #f8fbff;
       --red-500: #c0392b;
       --red-100: #fdecea;
+      --green-500: #1a9c5b;
+      --green-100: #e6f7ef;
     }
 
     html,
@@ -257,7 +259,7 @@
       line-height: 1.6;
     }
 
-    /* ─── RIGHT: formulário ─── */
+    /* ─── RIGHT: conteúdo ─── */
     .right {
       padding: 48px 52px;
       flex: 1;
@@ -267,6 +269,19 @@
       animation: fadeUp 0.6s 0.25s ease both;
     }
 
+    /* ─── Estado: formulário ─── */
+    .state-form,
+    .state-success {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .state-success {
+      display: none;
+    }
+
+    /* ─── Cabeçalho ─── */
     .welcome-eyebrow {
       font-size: 11px;
       font-weight: 600;
@@ -365,30 +380,6 @@
       box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.10);
     }
 
-    /* Toggle visibilidade senha */
-    .btn-toggle-pw {
-      position: absolute;
-      right: 12px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: rgba(11, 37, 80, 0.38);
-      display: flex;
-      align-items: center;
-      padding: 4px;
-      border-radius: 6px;
-      transition: color 0.15s;
-    }
-
-    .btn-toggle-pw:hover {
-      color: var(--blue-700);
-    }
-
-    .btn-toggle-pw:focus-visible {
-      outline: 2px solid var(--blue-700);
-      outline-offset: 1px;
-    }
-
     .field-error {
       font-size: 11.5px;
       color: var(--red-500);
@@ -402,79 +393,7 @@
       display: flex;
     }
 
-    /* ─── Row: lembrar + esqueceu ─── */
-    .form-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-top: -4px;
-    }
-
-    .checkbox-label {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 13px;
-      font-weight: 500;
-      color: rgba(11, 37, 80, 0.6);
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .checkbox-label input[type="checkbox"] {
-      appearance: none;
-      -webkit-appearance: none;
-      width: 16px;
-      height: 16px;
-      border: 1.5px solid rgba(19, 72, 160, 0.35);
-      border-radius: 4px;
-      background: rgba(255, 255, 255, 0.7);
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: background 0.15s, border-color 0.15s;
-      position: relative;
-    }
-
-    .checkbox-label input[type="checkbox"]:checked {
-      background: var(--blue-700);
-      border-color: var(--blue-700);
-    }
-
-    .checkbox-label input[type="checkbox"]:checked::after {
-      content: '';
-      position: absolute;
-      top: 2px;
-      left: 4px;
-      width: 5px;
-      height: 9px;
-      border: 2px solid #fff;
-      border-top: none;
-      border-left: none;
-      transform: rotate(40deg);
-    }
-
-    .checkbox-label input[type="checkbox"]:focus-visible {
-      outline: 2px solid var(--blue-700);
-      outline-offset: 2px;
-    }
-
-    .forgot-link {
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--blue-500);
-      text-decoration: none;
-      letter-spacing: 0.01em;
-      transition: color 0.15s;
-      white-space: nowrap;
-    }
-
-    .forgot-link:hover {
-      color: var(--blue-700);
-      text-decoration: underline;
-    }
-
-    /* ─── Alerta global ─── */
+    /* ─── Alerta de erro ─── */
     .alert {
       display: none;
       align-items: flex-start;
@@ -503,15 +422,9 @@
 
     /* ─── Botões ─── */
     .actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    @media (max-width: 480px) {
-      .actions {
-        grid-template-columns: 1fr;
-      }
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .btn {
@@ -584,7 +497,7 @@
       box-shadow: 0 6px 20px rgba(11, 37, 80, 0.08);
     }
 
-    /* Spinner dentro do botão */
+    /* Spinner */
     .btn-spinner {
       display: none;
       width: 16px;
@@ -596,9 +509,7 @@
     }
 
     @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+      to { transform: rotate(360deg); }
     }
 
     .btn-primary.loading .btn-spinner {
@@ -609,31 +520,121 @@
       display: none;
     }
 
-    /* Botão MT Login */
-    .btn-mt-login {
-      background: #00315a !important;
-      /* Cor padrão MT Login */
-      color: #fff !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    /* ─── Estado de sucesso ─── */
+    .success-icon-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e6f7ef 0%, #c8f0de 100%);
+      border: 2px solid rgba(26, 156, 91, 0.2);
+      margin-bottom: 4px;
+      animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     }
 
-    .btn-mt-login .btn-label {
-      font-weight: 600;
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    .success-icon-wrap svg {
+      color: var(--green-500);
+    }
+
+    /* Animação do checkmark SVG */
+    .check-path {
+      stroke-dasharray: 30;
+      stroke-dashoffset: 30;
+      animation: drawCheck 0.4s 0.3s ease forwards;
+    }
+
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .success-title {
+      font-family: 'Nunito', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--blue-900);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .success-desc {
       font-size: 14px;
-      letter-spacing: 0.01em;
+      color: rgba(11, 37, 80, 0.55);
+      line-height: 1.6;
     }
 
-    .btn-mt-login:hover:not(:disabled) {
-      background: #0a1f42 !important;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+    /* ─── Bloco de suporte ─── */
+    .support-block {
+      background: rgba(36, 112, 212, 0.05);
+      border: 1px solid rgba(36, 112, 212, 0.14);
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    .mt-login-img {
-      width: 32px;
-      height: auto;
-      margin-right: 8px;
-      display: block;
+    .support-block-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: rgba(11, 37, 80, 0.4);
+    }
+
+    .support-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .support-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: rgba(36, 112, 212, 0.09);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--blue-700);
+    }
+
+    .support-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .support-label {
+      font-size: 10.5px;
+      color: rgba(11, 37, 80, 0.4);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .support-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue-900);
+    }
+
+    .support-value a {
+      color: var(--blue-700);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .support-value a:hover {
+      color: var(--blue-500);
+      text-decoration: underline;
     }
 
     /* ─── Footer ─── */
@@ -823,7 +824,11 @@
     html[data-contrast="high"] .footer-links a,
     html[data-contrast="high"] .footer-badge,
     html[data-contrast="high"] .field label,
-    html[data-contrast="high"] .checkbox-label {
+    html[data-contrast="high"] .support-block-title,
+    html[data-contrast="high"] .support-label,
+    html[data-contrast="high"] .support-value,
+    html[data-contrast="high"] .success-title,
+    html[data-contrast="high"] .success-desc {
       color: #000000;
     }
 
@@ -872,6 +877,20 @@
     html[data-contrast="high"] .a11y-btn[aria-pressed="true"] {
       background: #000066;
       color: #ffffff;
+    }
+
+    html[data-contrast="high"] .support-block {
+      background: #f5f5f5;
+      border: 2px solid #000;
+    }
+
+    html[data-contrast="high"] .support-icon {
+      background: #e0e0e0;
+    }
+
+    html[data-contrast="high"] .success-icon-wrap {
+      background: #e0f0e8;
+      border: 2px solid #006633;
     }
 
     /* ─── Tablet (≤ 860px) ─── */
@@ -1006,7 +1025,12 @@
         font-size: 24px;
       }
 
-      .welcome-desc {
+      .success-title {
+        font-size: 22px;
+      }
+
+      .welcome-desc,
+      .success-desc {
         font-size: 13px;
         margin-top: 6px;
       }
@@ -1033,6 +1057,10 @@
         gap: 10px;
         flex-wrap: wrap;
         justify-content: center;
+      }
+
+      .support-block {
+        padding: 14px 14px;
       }
     }
   </style>
@@ -1073,7 +1101,6 @@
           <div class="logo-wrap">
             <img class="logo-map-img" src="assets/mt-mapa-nos.png" alt="Mapa do Mato Grosso" />
 
-            <!-- Elipses orbitais animadas por cima -->
             <svg class="logo-orbit-svg" viewBox="0 0 250 250" fill="none" xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true">
               <defs>
@@ -1086,17 +1113,14 @@
                 </filter>
               </defs>
               <g transform="translate(125,125)">
-                <!-- Órbita externa — círculo perfeito -->
                 <circle r="93" stroke="rgba(36,112,212,0.22)" stroke-width="1.3" stroke-dasharray="160 424" fill="none">
                   <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s"
                     repeatCount="indefinite" />
                 </circle>
-                <!-- Órbita interna — círculo perfeito, sentido oposto -->
                 <circle r="78" stroke="rgba(36,112,212,0.14)" stroke-width="0.9" stroke-dasharray="110 380" fill="none">
                   <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="28s"
                     repeatCount="indefinite" />
                 </circle>
-                <!-- Pontinhos orbitais -->
                 <circle cx="93" cy="0" r="3" fill="#2470d4" opacity="0.75" filter="url(#glow-orbit)">
                   <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s"
                     repeatCount="indefinite" />
@@ -1105,7 +1129,6 @@
                   <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s"
                     repeatCount="indefinite" />
                 </circle>
-
                 <circle cx="0" cy="-78" r="2.2" fill="#1a56a0" opacity="0.40" filter="url(#glow-orbit)">
                   <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="28s"
                     repeatCount="indefinite" />
@@ -1143,138 +1166,189 @@
         <!-- Divider -->
         <div class="divider"></div>
 
-        <!-- RIGHT: Login -->
+        <!-- RIGHT: Conteúdo -->
         <div class="right">
-          <div>
-            <div class="welcome-eyebrow">Acesso seguro</div>
-            <h1 class="welcome-title">Entrar na<br><em>plataforma</em></h1>
-            <p class="welcome-desc">Informe suas credenciais para acessar o sistema.</p>
-          </div>
 
-          <!-- Alerta de erro -->
-          <div class="alert alert-error" id="alertError" role="alert" aria-live="polite">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
-              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="8" x2="12" y2="12" />
-              <circle cx="12" cy="16" r="1" fill="currentColor" stroke="none" />
-            </svg>
-            <span id="alertErrorMsg">Usuário ou senha incorretos. Verifique e tente novamente.</span>
-          </div>
+          <!-- ── Estado 1: Formulário ── -->
+          <div class="state-form" id="stateForm" aria-live="polite">
 
-          <form class="form" id="loginForm" novalidate autocomplete="on">
-
-            <!-- E-mail -->
-            <div class="field">
-              <label for="inputUser">E-mail</label>
-              <div class="input-wrap">
-                <span class="input-icon">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="8" r="4" />
-                    <path d="M4 20a8 8 0 0 1 16 0" />
-                  </svg>
-                </span>
-                <input type="text" id="inputUser" name="username" autocomplete="username" placeholder="seu@email.com"
-                  aria-required="true" aria-describedby="errorUser" />
-              </div>
-              <span class="field-error" id="errorUser">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                  stroke-linecap="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="12" y1="8" x2="12" y2="12" />
-                  <circle cx="12" cy="16" r="1" fill="currentColor" stroke="none" />
-                </svg>
-                Informe seu e-mail.
-              </span>
+            <div>
+              <div class="welcome-eyebrow">Recuperar acesso</div>
+              <h1 class="welcome-title">Esqueceu sua<br><em>senha?</em></h1>
+              <p class="welcome-desc">
+                Informe o e-mail cadastrado e enviaremos um link para você criar uma nova senha.
+              </p>
             </div>
 
-            <!-- Senha -->
-            <div class="field">
-              <label for="inputPassword">Senha</label>
-              <div class="input-wrap">
-                <span class="input-icon">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="3" y="11" width="18" height="11" rx="2" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            <!-- Alerta de erro -->
+            <div class="alert alert-error" id="alertError" role="alert" aria-live="polite">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <circle cx="12" cy="16" r="1" fill="currentColor" stroke="none" />
+              </svg>
+              <span id="alertErrorMsg">Não foi possível enviar o e-mail. Tente novamente.</span>
+            </div>
+
+            <form class="form" id="resetForm" novalidate>
+
+              <div class="field">
+                <label for="inputEmail">E-mail cadastrado</label>
+                <div class="input-wrap">
+                  <span class="input-icon">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect x="2" y="4" width="20" height="16" rx="2" />
+                      <path d="M2 7l10 7 10-7" />
+                    </svg>
+                  </span>
+                  <input type="email" id="inputEmail" name="email" autocomplete="email"
+                    placeholder="seu@email.com" aria-required="true" aria-describedby="errorEmail" />
+                </div>
+                <span class="field-error" id="errorEmail">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <circle cx="12" cy="16" r="1" fill="currentColor" stroke="none" />
                   </svg>
+                  <span id="errorEmailMsg">Informe um e-mail válido.</span>
                 </span>
-                <input type="password" id="inputPassword" name="password" autocomplete="current-password"
-                  placeholder="Sua senha" aria-required="true" aria-describedby="errorPassword"
-                  style="padding-right: 44px;" />
-                <button type="button" class="btn-toggle-pw" id="btnTogglePw" aria-label="Mostrar senha"
-                  title="Mostrar/ocultar senha">
-                  <!-- Eye icon (senha oculta) -->
-                  <svg id="iconEye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                    <circle cx="12" cy="12" r="3" />
-                  </svg>
-                  <!-- Eye-off icon (senha visível) -->
-                  <svg id="iconEyeOff" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-                    style="display:none">
-                    <path
-                      d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
-                    <line x1="1" y1="1" x2="23" y2="23" />
-                  </svg>
+              </div>
+
+              <div class="actions">
+                <button type="submit" class="btn btn-primary" id="btnSend">
+                  <span class="btn-spinner" aria-hidden="true"></span>
+                  <span class="btn-label">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M22 2L11 13" />
+                      <path d="M22 2L15 22l-4-9-9-4 20-7z" />
+                    </svg>
+                    Enviar link de redefinição
+                  </span>
                 </button>
+                <a href="login.html" class="btn btn-back">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                  </svg>
+                  Voltar ao login
+                </a>
               </div>
-              <span class="field-error" id="errorPassword">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                  stroke-linecap="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="12" y1="8" x2="12" y2="12" />
-                  <circle cx="12" cy="16" r="1" fill="currentColor" stroke="none" />
-                </svg>
-                Informe sua senha.
-              </span>
+
+            </form>
+
+            <!-- Suporte alternativo -->
+            <div class="support-block">
+              <p class="support-block-title">Precisa de ajuda imediata?</p>
+              <div class="support-row">
+                <div class="support-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
+                </div>
+                <div class="support-info">
+                  <span class="support-label">WhatsApp / Telefone</span>
+                  <span class="support-value">
+                    <a href="https://wa.me/5565984331542" target="_blank" rel="noopener">(65) 98433-1542</a>
+                  </span>
+                </div>
+              </div>
+              <div class="support-row">
+                <div class="support-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                    <path d="M2 7l10 7 10-7" />
+                  </svg>
+                </div>
+                <div class="support-info">
+                  <span class="support-label">E-mail</span>
+                  <span class="support-value">
+                    <a href="mailto:saudedigitalmt@ses.mt.gov.br">saudedigitalmt@ses.mt.gov.br</a>
+                  </span>
+                </div>
+              </div>
             </div>
 
-            <!-- Lembrar + Esqueceu -->
-            <div class="form-meta">
-              <label class="checkbox-label">
-                <input type="checkbox" id="chkRemember" name="remember" />
-                Lembrar-me
-              </label>
-              <a href="esqueceu-senha.html" class="forgot-link">Esqueceu a senha?</a>
+          </div>
+
+          <!-- ── Estado 2: Sucesso ── -->
+          <div class="state-success" id="stateSuccess" aria-live="polite" aria-atomic="true">
+
+            <div class="success-icon-wrap" aria-hidden="true">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline class="check-path" points="20 6 9 17 4 12" />
+              </svg>
             </div>
 
-            <!-- Ações -->
+            <div>
+              <h1 class="success-title">E-mail enviado!</h1>
+              <p class="welcome-desc" style="margin-top: 10px;">
+                Se <strong id="emailSentTo" style="color: var(--blue-700); font-weight: 700;"></strong> estiver
+                cadastrado, você receberá as instruções em instantes.<br><br>
+                Não encontrou? Verifique a caixa de <strong>spam</strong> ou lixo eletrônico.
+              </p>
+            </div>
+
+            <!-- Suporte no estado de sucesso também -->
+            <div class="support-block">
+              <p class="support-block-title">Ainda com problemas?</p>
+              <div class="support-row">
+                <div class="support-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
+                </div>
+                <div class="support-info">
+                  <span class="support-label">WhatsApp / Telefone</span>
+                  <span class="support-value">
+                    <a href="https://wa.me/5565984331542" target="_blank" rel="noopener">(65) 98433-1542</a>
+                  </span>
+                </div>
+              </div>
+              <div class="support-row">
+                <div class="support-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                    <path d="M2 7l10 7 10-7" />
+                  </svg>
+                </div>
+                <div class="support-info">
+                  <span class="support-label">E-mail</span>
+                  <span class="support-value">
+                    <a href="mailto:saudedigitalmt@ses.mt.gov.br">saudedigitalmt@ses.mt.gov.br</a>
+                  </span>
+                </div>
+              </div>
+            </div>
+
             <div class="actions">
-              <button type="submit" class="btn btn-primary" id="btnLogin">
-                <span class="btn-spinner" aria-hidden="true"></span>
-                <span class="btn-label">
-                  Entrar
-                </span>
-              </button>
-
-              <button type="button" class="btn btn-mt-login" id="btnMTLogin">
-                <img src="uploads/mtlogin.png" alt="MT Login" class="mt-login-img" />
-                <span class="btn-label">MT Login</span>
-              </button>
-
-              <a href="index.html" class="btn btn-back" style="grid-column: span 2;">
+              <a href="login.html" class="btn btn-primary">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M19 12H5M12 19l-7-7 7-7" />
                 </svg>
-                Voltar ao início
+                Voltar ao login
               </a>
             </div>
 
-          </form>
-        </div>
+          </div>
 
-      </div>
+        </div><!-- /right -->
+      </div><!-- /card-body -->
 
       <!-- Footer -->
       <div class="card-footer">
         <span class="footer-text">Dúvidas? <a href="mailto:saudedigitalmt@ses.mt.gov.br">Fale com o suporte</a></span>
         <nav class="footer-links">
-          <a href="https://uysi.vercel.app/politica-privacidade" target="_blank" rel="noopener">Política de
-            Privacidade</a>
+          <a href="https://uysi.vercel.app/politica-privacidade" target="_blank" rel="noopener">Política de Privacidade</a>
           <span></span>
           <a href="https://uysi.vercel.app/termos-de-uso" target="_blank" rel="noopener">Termos de Uso</a>
         </nav>
@@ -1285,6 +1359,7 @@
           Conexão segura
         </span>
       </div>
+
     </div>
   </main>
 
@@ -1382,79 +1457,67 @@
     init();
     tick();
 
-    // ─── Toggle visibilidade da senha ──────────────────────────────────────
-    const inputPw = document.getElementById('inputPassword');
-    const btnToggle = document.getElementById('btnTogglePw');
-    const iconEye = document.getElementById('iconEye');
-    const iconEyeOff = document.getElementById('iconEyeOff');
-
-    btnToggle.addEventListener('click', () => {
-      const visible = inputPw.type === 'text';
-      inputPw.type = visible ? 'password' : 'text';
-      iconEye.style.display = visible ? '' : 'none';
-      iconEyeOff.style.display = visible ? 'none' : '';
-      btnToggle.setAttribute('aria-label', visible ? 'Mostrar senha' : 'Ocultar senha');
-    });
-
-    // ─── Validação e submit ────────────────────────────────────────────────
-    const form = document.getElementById('loginForm');
-    const inputUser = document.getElementById('inputUser');
-    const errorUser = document.getElementById('errorUser');
-    const errorPw = document.getElementById('errorPassword');
+    // ─── Formulário de redefinição ────────────────────────────────────────
+    const form = document.getElementById('resetForm');
+    const inputEmail = document.getElementById('inputEmail');
+    const errorEmail = document.getElementById('errorEmail');
+    const errorEmailMsg = document.getElementById('errorEmailMsg');
     const alertError = document.getElementById('alertError');
-    const btnLogin = document.getElementById('btnLogin');
+    const alertErrorMsg = document.getElementById('alertErrorMsg');
+    const btnSend = document.getElementById('btnSend');
+    const stateForm = document.getElementById('stateForm');
+    const stateSuccess = document.getElementById('stateSuccess');
+    const emailSentTo = document.getElementById('emailSentTo');
+
+    function isValidEmail(v) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+    }
 
     function clearErrors() {
-      inputUser.classList.remove('invalid');
-      inputPw.classList.remove('invalid');
-      errorUser.classList.remove('visible');
-      errorPw.classList.remove('visible');
+      inputEmail.classList.remove('invalid');
+      errorEmail.classList.remove('visible');
       alertError.classList.remove('visible');
     }
+
+    inputEmail.addEventListener('input', clearErrors);
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       clearErrors();
 
-      let valid = true;
+      const email = inputEmail.value.trim();
 
-      if (!inputUser.value.trim()) {
-        inputUser.classList.add('invalid');
-        errorUser.classList.add('visible');
-        valid = false;
+      if (!email) {
+        inputEmail.classList.add('invalid');
+        errorEmailMsg.textContent = 'Informe seu e-mail.';
+        errorEmail.classList.add('visible');
+        inputEmail.focus();
+        return;
       }
 
-      if (!inputPw.value) {
-        inputPw.classList.add('invalid');
-        errorPw.classList.add('visible');
-        valid = false;
+      if (!isValidEmail(email)) {
+        inputEmail.classList.add('invalid');
+        errorEmailMsg.textContent = 'Informe um e-mail válido.';
+        errorEmail.classList.add('visible');
+        inputEmail.focus();
+        return;
       }
 
-      if (!valid) return;
+      // Loading
+      btnSend.classList.add('loading');
+      btnSend.disabled = true;
 
-      // Simula requisição (substitua pela integração real)
-      btnLogin.classList.add('loading');
-      btnLogin.disabled = true;
+      // Simula chamada de API (substituir pela integração real)
+      await new Promise(r => setTimeout(r, 1600));
 
-      await new Promise(r => setTimeout(r, 1400));
+      btnSend.classList.remove('loading');
+      btnSend.disabled = false;
 
-      btnLogin.classList.remove('loading');
-      btnLogin.disabled = false;
-
-      // Exibe erro de credenciais (lógica real depende do backend)
-      alertError.classList.add('visible');
-      inputUser.classList.add('invalid');
-      inputPw.classList.add('invalid');
-    });
-
-    // Limpa erros ao digitar
-    inputUser.addEventListener('input', clearErrors);
-    inputPw.addEventListener('input', clearErrors);
-
-    // ─── Botão MT Login ───────────────────────────────────────────────────
-    document.getElementById('btnMTLogin').addEventListener('click', () => {
-      // Redireciona para o portal de autenticação do MT Login
-      window.location.href = 'https://telessaudemt.com.br/painel/mt-login';
+      // Exibe estado de sucesso
+      emailSentTo.textContent = email;
+      stateForm.style.display = 'none';
+      stateSuccess.style.display = 'flex';
+      stateSuccess.focus();
     });
 
     // ─── Acessibilidade: fonte e contraste ────────────────────────────────
@@ -1464,8 +1527,10 @@
       const MAX = 1.45;
       const SELECTOR = [
         '.welcome-title', '.welcome-eyebrow', '.welcome-desc',
+        '.success-title', '.success-desc',
         '.field label', '.btn', '.footer-text', '.footer-links a',
-        '.footer-badge', '.gov-label', '.ig-follow', '.checkbox-label', '.forgot-link',
+        '.footer-badge', '.gov-label', '.ig-follow',
+        '.support-block-title', '.support-label', '.support-value',
         '.input-wrap input'
       ].join(',');
 
